@@ -1,4 +1,4 @@
 # dualManipulators
 
 ##2020.01.03
-   simply collision model  sphere 
+   simply collision model   
