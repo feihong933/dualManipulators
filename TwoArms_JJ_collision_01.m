@@ -4,7 +4,7 @@ clc
 
 %去掉关节运动模型，直接使用三次多项式轨迹规划结果——2019.12.25
 
-%改进碰撞检测模型，用圆柱简化——2020.01.07 
+%改进碰撞检测模型，用圆柱简化
 
 %% robot_arm URDF
 addpath(genpath('urdf'),genpath('Utilities'))
