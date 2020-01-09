@@ -4,7 +4,7 @@ clc
 
 %È¥µô¹Ø½ÚÔË¶¯Ä£ĞÍ£¬Ö±½ÓÊ¹ÓÃÈı´Î¶àÏîÊ½¹ì¼£¹æ»®½á¹û¡ª¡ª2019.12.25
 
-%¸Ä½øÅö×²¼ì²âÄ£ĞÍ£¬ÓÃÇòºÍÔ²Öù¼ò»¯¡ª¡ª2020.01.03
+%¸Ä½øÅö×²¼ì²âÄ£ĞÍ£¬ÓÃÔ²Öù¼ò»¯¡ª¡ª2020.01.07 
 
 %% robot_arm URDF
 addpath(genpath('urdf'),genpath('Utilities'))
@@ -83,55 +83,68 @@ jointConfigArray2 = cubicpolytraj(ctrlpoints2,timeInterval,trajTimes);%Èı´Î¶àÏîÊ
 
 %%  Åö×²Ä£ĞÍµ¼Èë
 
+collision1=importrobot('collision1.urdf');
+collision2=importrobot('collision2.urdf');
+
 collisionArrayFromMesh_1=cell(robot_arm1.NumBodies,2);
 collisionArrayFromMesh_2=cell(robot_arm2.NumBodies,2);
 
-robotarm_Collision_1 = robot_arm1;
+robotarm_Collision_1 = collision1;
 robotarm_Collision_2 = robot_arm2;
 
-% È¡³öÖ÷±ÛÏàÓ¦¹Ø½ÚµÄ STL ÎÄ¼şÖĞµÄÄ£ĞÍÊı¾İ¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
+
+% Ö÷±ÛÅö×²¼ì²âÄ£ĞÍ¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
 robotBodies_1 = [{robotarm_Collision_1.Base} robotarm_Collision_1.Bodies];%%´óÀ¨ºÅÖĞÄÚÈİ±íÊ¾½«»úĞµ±Û»ù×ù°üÀ¨ÔÚÄÚ
-for i = 1:numel(robotBodies_1)-1  %¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
-    if ~isempty(robotBodies_1{i}.Visuals)
-        % Assumes the first Visuals element is the correct one.
-        visualDetails = robotBodies_1{i}.Visuals{1};
-        
-        % Extract the part of the visual that actually specifies the STL name
-        visualParts = strsplit(visualDetails, ':');
-        stlFileName = visualParts{2};
-        
-        % Read the STL file
-        stlData = stlread(stlFileName);
-        
-        % Create a collisionMesh object from the vertices
-        collisionArrayFromMesh_1{i,1} = collisionMesh(stlData.Points);
-        
-        % Transform is always identity
-        collisionArrayFromMesh_1{i,2} = eye(4);
-    end
+
+collisionArrayFromMesh_1{1,1} = collisionCylinder(0.07,0.1);
+collisionArrayFromMesh_1{1,1}.Pose=trvec2tform([0,0,0.045]);
+
+collisionArrayFromMesh_1{2,1} = collisionCylinder(0.04,0.05);
+collisionArrayFromMesh_1{2,1}.Pose=trvec2tform([0,0,0.03]);
+
+collisionArrayFromMesh_1{3,1} = collisionCylinder(0.0275,0.1);
+collisionArrayFromMesh_1{3,1}.Pose=trvec2tform([0,0,0.05])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_1{4,1} = collisionCylinder(0.0275,0.09);
+collisionArrayFromMesh_1{4,1}.Pose=trvec2tform([0,0,0.043])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_1{5,1} = collisionCylinder(0.0275,0.07);
+collisionArrayFromMesh_1{5,1}.Pose=trvec2tform([0,0,0.03])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_1{6,1} = collisionBox(0.06,0.02,0.09);
+collisionArrayFromMesh_1{6,1}.Pose=trvec2tform([0,0,0.007]);
+
+for i=1:6
+     collisionArrayFromMesh_1{i,2} = eye(4);
 end
-   
+% show(collisionArrayFromMesh_1{1,1})
+% hold on
+% show(collisionArrayFromMesh_1{1,2})
+
 
 % È¡³ö¸±±ÛÏàÓ¦¹Ø½ÚµÄ STL ÎÄ¼şÖĞµÄÄ£ĞÍÊı¾İ¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
 robotBodies_2 = [{robotarm_Collision_2.Base} robotarm_Collision_2.Bodies];%%´óÀ¨ºÅÖĞÄÚÈİ±íÊ¾½«»úĞµ±Û»ù×ù°üÀ¨ÔÚÄÚ
-for i = 1:numel(robotBodies_2)-1  %¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
-    if ~isempty(robotBodies_2{i}.Visuals)
-        % Assumes the first Visuals element is the correct one.
-        visualDetails = robotBodies_2{i}.Visuals{1};
-        
-        % Extract the part of the visual that actually specifies the STL name
-        visualParts = strsplit(visualDetails, ':');
-        stlFileName = visualParts{2};
-        
-        % Read the STL file
-        stlData = stlread(stlFileName);
-        
-        % Create a collisionMesh object from the vertices
-        collisionArrayFromMesh_2{i,1} = collisionMesh(stlData.Points);
-        
-        % Transform is always identity
-        collisionArrayFromMesh_2{i,2} = eye(4);
-    end
+
+collisionArrayFromMesh_2{1,1} = collisionCylinder(0.07,0.1);
+collisionArrayFromMesh_2{1,1}.Pose=trvec2tform([0.3,0,0.045])*axang2tform([0 0 1 2*pi]);
+
+collisionArrayFromMesh_2{2,1} = collisionCylinder(0.04,0.05);
+collisionArrayFromMesh_2{2,1}.Pose=trvec2tform([0,0,0.03]);
+
+collisionArrayFromMesh_2{3,1} = collisionCylinder(0.0275,0.1);
+collisionArrayFromMesh_2{3,1}.Pose=trvec2tform([0,0,0.05])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_2{4,1} = collisionCylinder(0.0275,0.09);
+collisionArrayFromMesh_2{4,1}.Pose=trvec2tform([0,0,0.043])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_2{5,1} = collisionCylinder(0.0275,0.07);
+collisionArrayFromMesh_2{5,1}.Pose=trvec2tform([0,0,0.03])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+
+collisionArrayFromMesh_2{6,1} = collisionBox(0.06,0.02,0.09);
+collisionArrayFromMesh_2{6,1}.Pose=trvec2tform([0,0,0.007]);
+
+for i=1:6
+     collisionArrayFromMesh_2{i,2} = eye(4);
 end
 
 %%  ÏÔÊ¾
