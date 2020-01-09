@@ -1,20 +1,7 @@
 <?xml version="1.0"?>
 <!-- Open_Manipulator Chain -->
-<robot name="open_manipulator" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="open_manipulator">
 
-  <!-- Transmission macro -->
-  <xacro:macro name="SimpleTransmission" params="joint n">
-    <transmission name="tran${n}">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${joint}">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="motor${n}">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-  </xacro:macro>
 
   <!-- World -->
   <link name="world">
