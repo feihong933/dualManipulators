@@ -131,15 +131,20 @@ collisionArrayFromMesh_2{5,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 collisionArrayFromMesh_2{6,1} = collisionBox(0.06,0.02,0.09);
 collisionArrayFromMesh_2{6,2}=trvec2tform([0,0,0.075]);
 
+%碰撞模型显示
+figure('Name','碰撞模型')
+showCollisionTree(robot_arm1,collisionArrayFromMesh_1,currentRobotJConfig);
+hold on
+showCollisionTree(robot_arm2,collisionArrayFromMesh_2,currentRobotJConfig);
+hold off
+
 
 %%  显示
-figure
+
+figure('Name','运动轨迹')
 show(robot_arm1,currentRobotJConfig,'PreservePlot',false,'Frames','off');
 hold on
-% showCollisionTree(robot_arm1,collisionArrayFromMesh_1,randomRobotConfig);
-
 show(robot_arm2,currentRobotJConfig,'PreservePlot',false,'Frames','off');
-% showCollisionTree(robot_arm2,collisionArrayFromMesh_2,randomRobotConfig);
 axis([-0.5 0.8 -0.5 0.5 -0.1 0.5]);
 camva('auto');%设置相机视角
 
