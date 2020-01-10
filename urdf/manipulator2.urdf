@@ -1,20 +1,7 @@
 <?xml version="1.0"?>
 <!-- Open_Manipulator Chain -->
-<robot name="open_manipulator" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="manipulator2">
 
-  <!-- Transmission macro -->
-  <xacro:macro name="SimpleTransmission" params="joint n">
-    <transmission name="tran${n}">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${joint}">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="motor${n}">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-  </xacro:macro>
 
   <!-- World -->
   <link name="world">
@@ -96,7 +83,7 @@
     <origin   xyz="0 -0.01 0.046545"
       rpy="1.5708 3.6349E-31 1.5708" />
     <axis xyz="0 0 1"/>
-    <limit velocity="4.8" effort="1" lower="-3.14" upper="3.14" />
+    <limit velocity="4.8" effort="1" lower="0" upper="3.14" />
   </joint>
 
   <!-- Transmission 1 -->
@@ -143,7 +130,7 @@
     <origin xyz="0.104 0 0"
       rpy="3.1416 -1.0106E-15 1.5708" />
     <axis xyz="0 0 1"/>
-    <limit velocity="4.8" effort="1" lower="-3.14" upper="3.14" />
+    <limit velocity="4.8" effort="1" lower="-1" upper="3.14" />
   </joint>
 
   <!-- Transmission 2 -->
@@ -190,7 +177,7 @@
     <origin xyz="0.088419 -0.0007415 0"
       rpy="-3.5109E-17 7.3879E-15 -1.5621" />
     <axis xyz="0 0 1"/>
-    <limit velocity="4.8" effort="1" lower="-3.14" upper="3.14" />
+    <limit velocity="4.8" effort="1" lower="-1" upper="3.14" />
   </joint>
 
   <!-- Transmission 3 -->
