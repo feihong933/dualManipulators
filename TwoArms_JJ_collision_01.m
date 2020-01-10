@@ -83,15 +83,11 @@ jointConfigArray2 = cubicpolytraj(ctrlpoints2,timeInterval,trajTimes);%Èı´Î¶àÏîÊ
 
 %%  Åö×²Ä£ĞÍµ¼Èë
 
-collision1=importrobot('collision1.urdf');
-collision2=importrobot('collision2.urdf');
-
 collisionArrayFromMesh_1=cell(robot_arm1.NumBodies,2);
 collisionArrayFromMesh_2=cell(robot_arm2.NumBodies,2);
 
-robotarm_Collision_1 = collision1;
-robotarm_Collision_2 = collision1;
-
+robotarm_Collision_1 = robot_arm1;
+robotarm_Collision_2 = robot_arm2;
 
 % Ö÷±ÛÅö×²¼ì²âÄ£ĞÍ¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
 robotBodies_1 = [{robotarm_Collision_1.Base} robotarm_Collision_1.Bodies];%%´óÀ¨ºÅÖĞÄÚÈİ±íÊ¾½«»úĞµ±Û»ù×ù°üÀ¨ÔÚÄÚ
@@ -113,8 +109,6 @@ collisionArrayFromMesh_1{5,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 
 collisionArrayFromMesh_1{6,1} = collisionBox(0.06,0.02,0.09);
 collisionArrayFromMesh_1{6,2}=trvec2tform([0,0,0.075]);
-
-
 
 % ¸±±ÛÅö×²Ä£ĞÍ¡ª¡ª»úĞµ±ÛÄ©¶Ë³ıÍâ
 robotBodies_2 = [{robotarm_Collision_2.Base} robotarm_Collision_2.Bodies];%%´óÀ¨ºÅÖĞÄÚÈİ±íÊ¾½«»úĞµ±Û»ù×ù°üÀ¨ÔÚÄÚ
