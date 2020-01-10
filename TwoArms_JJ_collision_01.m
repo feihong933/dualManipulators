@@ -90,68 +90,62 @@ collisionArrayFromMesh_1=cell(robot_arm1.NumBodies,2);
 collisionArrayFromMesh_2=cell(robot_arm2.NumBodies,2);
 
 robotarm_Collision_1 = collision1;
-robotarm_Collision_2 = robot_arm2;
+robotarm_Collision_2 = collision1;
 
 
 % 主臂碰撞检测模型——机械臂末端除外
 robotBodies_1 = [{robotarm_Collision_1.Base} robotarm_Collision_1.Bodies];%%大括号中内容表示将机械臂基座包括在内
 
-collisionArrayFromMesh_1{1,1} = collisionCylinder(0.07,0.1);
-collisionArrayFromMesh_1{1,1}.Pose=trvec2tform([0,0,0.045]);
+collisionArrayFromMesh_1{1,1} = collisionCylinder(0.07,0.08);
+collisionArrayFromMesh_1{1,2}=trvec2tform([0,0,0.045]);
 
 collisionArrayFromMesh_1{2,1} = collisionCylinder(0.04,0.05);
-collisionArrayFromMesh_1{2,1}.Pose=trvec2tform([0,0,0.03]);
+collisionArrayFromMesh_1{2,2}=trvec2tform([0,0,0.03]);
 
-collisionArrayFromMesh_1{3,1} = collisionCylinder(0.0275,0.1);
-collisionArrayFromMesh_1{3,1}.Pose=trvec2tform([0,0,0.05])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_1{3,1} = collisionCylinder(0.028,0.1);
+collisionArrayFromMesh_1{3,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 
-collisionArrayFromMesh_1{4,1} = collisionCylinder(0.0275,0.09);
-collisionArrayFromMesh_1{4,1}.Pose=trvec2tform([0,0,0.043])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_1{4,1} = collisionCylinder(0.028,0.09);
+collisionArrayFromMesh_1{4,2}=trvec2tform([0.05,0,0.0])*axang2tform([0 1 0 pi/2]);
 
-collisionArrayFromMesh_1{5,1} = collisionCylinder(0.0275,0.07);
-collisionArrayFromMesh_1{5,1}.Pose=trvec2tform([0,0,0.03])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_1{5,1} = collisionCylinder(0.025,0.07);
+collisionArrayFromMesh_1{5,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 
 collisionArrayFromMesh_1{6,1} = collisionBox(0.06,0.02,0.09);
-collisionArrayFromMesh_1{6,1}.Pose=trvec2tform([0,0,0.007]);
-
-for i=1:6
-     collisionArrayFromMesh_1{i,2} = eye(4);
-end
-% show(collisionArrayFromMesh_1{1,1})
-% hold on
-% show(collisionArrayFromMesh_1{1,2})
+collisionArrayFromMesh_1{6,2}=trvec2tform([0,0,0.075]);
 
 
-% 取出副臂相应关节的 STL 文件中的模型数据——机械臂末端除外
+
+% 副臂碰撞模型——机械臂末端除外
 robotBodies_2 = [{robotarm_Collision_2.Base} robotarm_Collision_2.Bodies];%%大括号中内容表示将机械臂基座包括在内
 
-collisionArrayFromMesh_2{1,1} = collisionCylinder(0.07,0.1);
-collisionArrayFromMesh_2{1,1}.Pose=trvec2tform([0.3,0,0.045])*axang2tform([0 0 1 2*pi]);
+collisionArrayFromMesh_2{1,1} = collisionCylinder(0.07,0.08);
+collisionArrayFromMesh_2{1,2}=trvec2tform([0.3,0,0.045])*axang2tform([0 0 1 2*pi]);
 
 collisionArrayFromMesh_2{2,1} = collisionCylinder(0.04,0.05);
-collisionArrayFromMesh_2{2,1}.Pose=trvec2tform([0,0,0.03]);
+collisionArrayFromMesh_2{2,2}=trvec2tform([0,0,0.03]);
 
-collisionArrayFromMesh_2{3,1} = collisionCylinder(0.0275,0.1);
-collisionArrayFromMesh_2{3,1}.Pose=trvec2tform([0,0,0.05])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_2{3,1} = collisionCylinder(0.028,0.1);
+collisionArrayFromMesh_2{3,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 
-collisionArrayFromMesh_2{4,1} = collisionCylinder(0.0275,0.09);
-collisionArrayFromMesh_2{4,1}.Pose=trvec2tform([0,0,0.043])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_2{4,1} = collisionCylinder(0.028,0.09);
+collisionArrayFromMesh_2{4,2}=trvec2tform([0.05,0,0.0])*axang2tform([0 1 0 pi/2]);
 
-collisionArrayFromMesh_2{5,1} = collisionCylinder(0.0275,0.07);
-collisionArrayFromMesh_2{5,1}.Pose=trvec2tform([0,0,0.03])*axang2tform([1 0 0 pi/2])*axang2tform([0 0 1 pi/2]);
+collisionArrayFromMesh_2{5,1} = collisionCylinder(0.025,0.07);
+collisionArrayFromMesh_2{5,2}=trvec2tform([0.05,0,0])*axang2tform([0 1 0 pi/2]);
 
 collisionArrayFromMesh_2{6,1} = collisionBox(0.06,0.02,0.09);
-collisionArrayFromMesh_2{6,1}.Pose=trvec2tform([0,0,0.007]);
+collisionArrayFromMesh_2{6,2}=trvec2tform([0,0,0.075]);
 
-for i=1:6
-     collisionArrayFromMesh_2{i,2} = eye(4);
-end
 
 %%  显示
 figure
 show(robot_arm1,currentRobotJConfig,'PreservePlot',false,'Frames','off');
 hold on
+% showCollisionTree(robot_arm1,collisionArrayFromMesh_1,randomRobotConfig);
+
 show(robot_arm2,currentRobotJConfig,'PreservePlot',false,'Frames','off');
+% showCollisionTree(robot_arm2,collisionArrayFromMesh_2,randomRobotConfig);
 axis([-0.5 0.8 -0.5 0.5 -0.1 0.5]);
 camva('auto');%设置相机视角
 
@@ -177,6 +171,8 @@ for i=1:length(trajTimes)
     disp(collisionPairIdx)
     
     show(robot_arm1,configNow1,'PreservePlot',false,'Frames','off');
+%     showCollisionTree(robot_arm1,collisionArrayFromMesh_1,configNow1);
+    
     plot3(poseNow1(1,4),poseNow1(2,4),poseNow1(3,4),'b.','MarkerSize',10)
     
     if isCollision==1
@@ -185,6 +181,8 @@ for i=1:length(trajTimes)
     end
     
     show(robot_arm2,configNow2,'PreservePlot',false,'Frames','off');
+%     showCollisionTree(robot_arm2,collisionArrayFromMesh_2,configNow2);
+   
     plot3(poseNow2(1,4),poseNow2(2,4),poseNow2(3,4),'r.','MarkerSize',10)
     
     if isCollision==1
@@ -192,6 +190,11 @@ for i=1:length(trajTimes)
         highlightCollisionBodies_Arms(robot_arm2,collisionPairIdx(:,2),gca)
     end
     
+%     figure
+%     showCollisionTree(robot_arm1,collisionArrayFromMesh_1,configNow1);
+%     hold on
+%     showCollisionTree(robot_arm2,collisionArrayFromMesh_2,configNow2);
+%     
     drawnow;
    
     %保存图片帧
