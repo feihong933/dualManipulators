@@ -4,7 +4,7 @@ function showCollisionTree(rigidBodyTree, rigidBodyCollisionArray, config)
 rbt = copy(rigidBodyTree);
 rbt.DataFormat = 'column';
 rbt.show(config,'PreservePlot',false,'Frames','off');
-hold all
+
 
 bodies = [{rbt.Base} rbt.Bodies];
 for i = 1:numel(bodies)-1
@@ -21,7 +21,7 @@ for i = 1:numel(bodies)-1
     if ~isempty(collisionObject)
         collisionObject.Pose = TForm*collisionObjectPosition;
         collisionObject.show('Parent',gca);
-       
+        hold on
     end
 end
 
