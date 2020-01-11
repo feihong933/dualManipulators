@@ -132,12 +132,13 @@ collisionArrayFromMesh_2{6,1} = collisionBox(0.06,0.02,0.09);
 collisionArrayFromMesh_2{6,2}=trvec2tform([0,0,0.075]);
 
 %碰撞模型显示
-figure('Name','碰撞模型')
-showCollisionTree(robot_arm1,collisionArrayFromMesh_1,currentRobotJConfig);
-hold on
-showCollisionTree(robot_arm2,collisionArrayFromMesh_2,currentRobotJConfig);
-hold off
-
+% figure('Name','碰撞模型')
+% showCollisionTree(robot_arm1,collisionArrayFromMesh_1,configNow1);
+% hold on
+% showCollisionTree(robot_arm2,collisionArrayFromMesh_2,configNow1);
+% axis([-0.5 0.8 -0.5 0.5 -0.1 0.5]);
+% camva('auto');%设置相机视角
+% hold off
 
 %%  显示
 
@@ -164,14 +165,15 @@ for i=1:length(trajTimes)
     poseNow2 = getTransform(robot_arm2,configNow2,endEffector);
      
      %每一时刻双机械臂关节间碰撞检测
-    [isCollision, collisionPairIdx] = dualmanipsCheckCollisions(robot_arm1,robot_arm2,...
+    [isCollision,minimumDistance,collisionPairIdx] = dualmanipsCheckCollisions(robot_arm1,robot_arm2,...
         collisionArrayFromMesh_1, collisionArrayFromMesh_2,configNow1, configNow2, true);
+    
+%     x=[isCollision,collisionPairIdx,minimumDistance];
     disp(isCollision)
     disp(collisionPairIdx)
+    disp(minimumDistance)
     
-    show(robot_arm1,configNow1,'PreservePlot',false,'Frames','off');
-%     showCollisionTree(robot_arm1,collisionArrayFromMesh_1,configNow1);
-    
+    show(robot_arm1,configNow1,'PreservePlot',false,'Frames','off');  
     plot3(poseNow1(1,4),poseNow1(2,4),poseNow1(3,4),'b.','MarkerSize',10)
     
     if isCollision==1
@@ -179,9 +181,7 @@ for i=1:length(trajTimes)
         highlightCollisionBodies_Arms(robot_arm1,collisionPairIdx(:,1),gca)
     end
     
-    show(robot_arm2,configNow2,'PreservePlot',false,'Frames','off');
-%     showCollisionTree(robot_arm2,collisionArrayFromMesh_2,configNow2);
-   
+    show(robot_arm2,configNow2,'PreservePlot',false,'Frames','off');  
     plot3(poseNow2(1,4),poseNow2(2,4),poseNow2(3,4),'r.','MarkerSize',10)
     
     if isCollision==1
@@ -193,7 +193,7 @@ for i=1:length(trajTimes)
 %     showCollisionTree(robot_arm1,collisionArrayFromMesh_1,configNow1);
 %     hold on
 %     showCollisionTree(robot_arm2,collisionArrayFromMesh_2,configNow2);
-%     
+ 
     drawnow;
    
     %保存图片帧

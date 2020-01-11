@@ -1,4 +1,4 @@
-function [isInCollision, collisionPairIdx] = dualmanipsCheckCollisions(tree1,tree2,bodyCollisionArray1, bodyCollisionArray2, config1,config2,isExhaustiveChecking)
+function [isInCollision, minimumDistance,collisionPairIdx, closestBodiesWitnessPts] = dualmanipsCheckCollisions(tree1,tree2,bodyCollisionArray1, bodyCollisionArray2, config1,config2,isExhaustiveChecking)
 % 双机械臂间关节碰撞检测
 
     % 输入参数定义
@@ -11,15 +11,16 @@ function [isInCollision, collisionPairIdx] = dualmanipsCheckCollisions(tree1,tre
     validateattributes(config2, {'double'}, {'nonempty','vector','nrows',length(tree2.homeConfiguration)}, 'manipsCollisions', 'config');
     validateattributes(isExhaustiveChecking, {'logical'}, {'nonempty','scalar'}, 'manipsCollisions', 'isExhaustiveChecking');
 
-    % 初始化输出参数
-    isInCollision = false;
-    collisionPairIdx = [];
-    
     % 定义数据格式等
     tree1.DataFormat = 'column';
     tree2.DataFormat = 'column';
     robotBodies1 = [{tree1.Base} tree1.Bodies];
     robotBodies2 = [{tree2.Base} tree2.Bodies];
+    
+     % 初始化输出参数
+    isInCollision = false;
+    minimumDistance = 1./zeros(numel(robotBodies1)-1,numel(robotBodies2)-1);%-1是去掉末端点
+    collisionPairIdx = [];
     
     % Rather than calling getTransform at each loop, populate a transform
     % tree, which is a cell array of all body transforms with respect to
@@ -40,9 +41,9 @@ function [isInCollision, collisionPairIdx] = dualmanipsCheckCollisions(tree1,tre
     end
     
     % 遍历机械臂1除基座外所有关节，除机械臂末端
-    for j = 2:numel(robotBodies1)-1
+    for j = 1:numel(robotBodies1)-1
         %遍历机械臂2除基座外所有关节，除机械臂末端
-        for k = 2:numel(robotBodies2)-1
+        for k = 1:numel(robotBodies2)-1
          
                 % Ensure that both bodies have associated collision objects
                 if ~isempty(bodyCollisionArray1{j,1}) && ~isempty(bodyCollisionArray2{k,1})
@@ -57,7 +58,7 @@ function [isInCollision, collisionPairIdx] = dualmanipsCheckCollisions(tree1,tre
 
                     % Check for local collision and update the overall
                     % collision status flag
-                    localCollisionStatus = checkCollision(bodyCollisionArray1{j}, bodyCollisionArray2{k});
+                    [localCollisionStatus, sepDist, wPts] = checkCollision(bodyCollisionArray1{j}, bodyCollisionArray2{k});
                     isInCollision = isInCollision || localCollisionStatus;
 
                     % If a collision is detected, update the matrix of bodies
@@ -68,11 +69,18 @@ function [isInCollision, collisionPairIdx] = dualmanipsCheckCollisions(tree1,tre
                         if ~isExhaustiveChecking
                             return;
                         end
-                    end
-                end        
-            
+                     end  
+%                         elseif ~isInCollision
+                            % If no collision has yet been detected,
+                            % update the minimum distance 
+%                             if sepDist < minimumDistance(j,k)
+                                minimumDistance(j,k) = sepDist;
+                                closestBodiesWitnessPts = wPts;
+%                               closestBodiesIdx = [i j];
+%                             end
+                    
+                end 
         end
-        
 
     end
 
